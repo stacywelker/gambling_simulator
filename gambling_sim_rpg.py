@@ -3,7 +3,7 @@ import random
 #from pprint import pprint
 import sys
 
-class Coin_flip_game():
+class Coin_flip_game:
     
         def __init__(self):
             self.coins = 100
@@ -42,7 +42,8 @@ class Coin_flip_game():
             self.coins -= self.new_amount
             self.revise_result_hist(self.coins)
             return self.coins
-        
+
+#function to start a game        
         def start_game(self):
             self.answer = input("Would you like to play a game of chance? (yes/no) ")
             while self.answer.lower() not in self.possible_answers1:
@@ -54,11 +55,14 @@ class Coin_flip_game():
             
             elif self.answer.lower() == "no":
                 print("Goodbye!")
-        
+
+#function to initiate a coin flip        
         def flip(self):
             flip = random.choice(self.coin_options)
             return flip
-        
+
+#function to run one entire coin flip, modify the coin amount, flip records, and winnings history.
+#if there are still coins, runs a function to start a new round         
         def game_round(self):
             print("You have {coin} coins".format(coin = self.coins))
             try:
@@ -82,7 +86,8 @@ class Coin_flip_game():
             print("You now have {coin} coins".format(coin = self.coins))
             self.check = self.coin_check()
             self.next = self.new_round()
-            
+
+#a function to start a new round            
         def new_round(self):
             answer = input("Would you like to play again or see your history? (yes/no/winnings/flip results) ")
             while answer.lower() not in self.possible_answers2:
@@ -102,17 +107,32 @@ class Coin_flip_game():
             elif answer.lower() == "flip results":
                 print(self.get_flip_history())
                 next_round = self.new_round()
-        
+
+#function to end game if coins are less than 0        
         def coin_check(self):
             if self.coins <= 0:
                 print("You are out of coins! Thanks for playing!")
                 sys.exit()
             else:
                 pass
-        
+#function to end game- not needed?        
         def end_game(self):
             pass
             
 
-new_game = Coin_flip_game()
-new_game.start_game()
+class Main_char:
+
+    def __init__(self, Cstrength, Csneakiness, Cintelligence, Cname):
+        self.name = Cname
+        self.strength = Cstrength
+        self.sneak = Csneakiness
+        self.intel = Cintelligence
+        self.name = Cname
+
+
+
+
+
+
+#new_game = Coin_flip_game()
+#new_game.start_game()
