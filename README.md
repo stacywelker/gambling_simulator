@@ -1,4 +1,4 @@
-# gambling_simulator
+# Gambling simulator
 Try a fun and relaxing game! What could go wrong?
 
 # What is this project?
