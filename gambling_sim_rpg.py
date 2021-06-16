@@ -122,12 +122,20 @@ class Coin_flip_game:
 
 class Main_char:
 
-    def __init__(self, Cstrength, Csneakiness, Cintelligence, Cname):
+    def __init__(self, Cstrength, Csneakiness, Cintelligence, Cname, Chealth):
         self.name = Cname
         self.strength = Cstrength
         self.sneak = Csneakiness
         self.intel = Cintelligence
         self.name = Cname
+        self.health = Chealth
+
+#getters and setters for the hero
+        def getHealth(self):
+            return self.health
+
+        def setHealth(self):
+            self.health = newHealth
 
 
 
