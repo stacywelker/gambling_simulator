@@ -60,23 +60,24 @@ class Coin_flip_game:
                 self.result = self.coin_options[0]
                 return self.result
 
+#helper function to only accept integers as input
+        def int_only(self):
+            user_input = input("How many coins will you wager? The table minimum is 10 coins. ")
+            while user_input.isdigit()== False:
+                user_input = input("Please enter a number greater or equal to 10.")
+            return(int(user_input))
+
 #function to run one entire coin flip, modify the coin amount, and count the number of rounds.
 #if there are still coins, runs a function to start a new round         
         def game_round(self):
-            
+              
+            print("regular round") #text for testing
             print("You have {coin} coins".format(coin = self.coins))
             
-            try:
-                self.wager = int(input("How many coins will you wager? The table minimum is 10 coins. "))
-                while self.wager < 10:
-                    print("The table limit is 10. Please wager at least 10 coins.")
-                    self.wager = int(input("How many coins will you wager? The table minimum is 10 coins. "))
-            except ValueError:
-                print("Please enter a number.")
-                self.wager = int(input("How many coins will you wager? The table minimum is 10 coins. "))
-                while self.wager < 10:
-                    print("The table limit is 10. Please wager at least 10 coins.")
-                    self.wager = int(input("How many coins will you wager? The table minimum is 10 coins. "))
+            self.wager = self.int_only()
+            while self.wager < 10:
+                print("The table limit is 10, please wager at least 10 coins. ")
+                self.wager = self.int_only()
 
             self.guess = input("Will you choose heads or tails? ")
             
@@ -128,28 +129,26 @@ class Coin_flip_game:
 
 #function to run a losing game round
         def losing_round(self):
-            print("You have {coin} coins".format(coin = self.coins))
             
-            try:
-                self.wager = int(input("How many coins will you wager? The table minimum is 10 coins. "))
-                while self.wager < 10:
-                    print("The table limit is 10. Please wager at least 10 coins.")
-                    self.wager = int(input("How many coins will you wager? The table minimum is 10 coins. "))
-            except ValueError:
-                print("Please enter a number.")
-                self.wager = int(input("How many coins will you wager? The table minimum is 10 coins. "))
+            print("losing round")#text for testing
+            print("You have {coin} coins".format(coin = self.coins))
+
+            self.wager = self.int_only()
+            while self.wager < 10:
+                print("The table limit is 10, please wager at least 10 coins. ")
+                self.wager = self.int_only()
 
             self.guess = input("Will you choose heads or tails? ")
-            
-            self.result = self.loaded_flip()
-            
             while self.guess not in self.coin_options:
                 print("Invalid choice.")
                 self.guess = input("Will you choose heads or tails? ")
-                
+            
+            self.result = self.loaded_flip()
+                        
             if self.guess in self.coin_options:
                 if self.guess == self.result:
                     self.add_coins(self.wager)
+
                 elif self.guess != self.result:
                     self.subtract_coins(self.wager)
             
@@ -172,63 +171,73 @@ class Coin_flip_game:
             if self.coins >= 500:
                 print("You have {coin} coins! You've won the game. Thanks for playing!".format(coin = self.coins))
                 self.end_game()
-
-            #elif self.coins == 0:
-            #    print("You are out of coins! Thanks for playing!")
-            #    self.end_game()
  
             elif self.coins <= 0:
                 answer2 = input(marker_string)
+                while answer2 not in self.possible_answers:
+                    answer2 = input("Invalid choice. Would you like to keep playing with a marker? (yes/no)")
+
                 if answer2 == "yes":
                     self.losing_round()
 
                 elif answer2 == "no" and self.coins < 0:
-                    self.bait_switch(1)
+                    self.bait_switch_1()
                 
                 elif answer2 == "no" and self.coins == 0:
                     print("You are out of coins! Thanks for playing!")
                     self.end_game() 
 
             elif self.coins <= -100:
-                self.bait_switch(2)
+                self.bait_switch_2()
        
 
 #Function to open the path to the RPG
-        def bait_switch(self, option):
-            the_situation1 = '''Not so fast, friend! Your coin balance is negative, you owe money to the house. \n
-            Don Corleone is a kind man, but he is not running a charity. How will you repay him? Choose a number.
+#first is for if the player owes less than 100
+        def bait_switch_1(self):
+            the_situation1 = '''Not so fast, friend! Your coin balance is negative, you owe money to the house. \nDon Corleone is a kind man, but he is not running a charity. How will you repay him? Choose a number.
                 (1) Double or nothing?
                 (2) Attempt to flee without repaying the debt
                 (3) I'm really sorry, I just don't have the money. Is there some sort of arrangement that we can work out?
                 '''
+            possible_replies_1 = ["1", "2", "3"]
+
+            answer3 = input(the_situation1)
+            while answer3 not in possible_replies_1:
+                answer3 = input('''Invalid choice. Please choose one of the following:
+                        (1) Double or nothing?
+                        (2) Attempt to flee without repaying the debt
+                        (3) I'm really sorry, I just don't have the money. Is there some sort of arrangement that we can work out?''')
             
-            the_situation2 = '''Wow, friend! You have dug yourself quite the hole here! \n
-            Let's stop pretending that you're going win your way out. \n
+            if answer3 == "1":
+                self.double()
+            
+            elif answer3 == "2":
+                    self.flee()
+
+            elif answer3 == "3":
+                    self.other_options()
+
+#Second is for if player owes >100 or has already played double or nothing
+        def bait_switch_2(self):        
+            the_situation2 = '''Wow, friend! You have dug yourself quite the hole here! \nLet's stop pretending that you're going win your way out. \n
             How will you repay Don Corleone? Choose a number.
                 (2) Attempt to flee without repaying the debt
                 (3) I'm really sorry, I just don't have the money. Is there some sort of arrangement that we can work out?
                 '''
             
-            possible_replies = ["1", "2", "3", "4"]
-            if option == 1:
-                answer3 = str(input(the_situation1))
-
-            elif option == 2:
-                answer3 = str(input(the_situation2))
-
-            while answer3 not in possible_replies:
-                answer3 = input('''Invalid choice. Please choose one of the following:
-                        (1) Double or nothing?
+            possible_replies_2 = ["2", "3"]
+            
+            answer3_2 = input(the_situation2)
+                  
+            while answer3_2 not in possible_replies_2:
+                answer3_2 = input('''Invalid choice. Please choose one of the following:
                         (2) Attempt to flee without repaying the debt
                         (3) I'm really sorry, I just don't have the money. Is there some sort of arrangement that we can work out?''')
 
-            if answer3 == "1":
-                    self.double()
-                    
-            elif answer3 == "2":
+            if answer3_2 == "2":
                     self.flee()
 
-            elif answer3 == "3":
+            elif answer3_2 == "3":
                     self.other_options()
 
 
@@ -243,7 +252,7 @@ class Coin_flip_game:
             if answer4 == "heads" or answer4 == "tails":
                 self.coins = 2 * self.coins
                 print("Oh no! You lost. You now owe {coins} coins.".format(coins = self.coins))
-                self.bait_switch(2)
+                self.bait_switch_2()
         
         
         def flee(self):
