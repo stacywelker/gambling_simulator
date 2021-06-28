@@ -7,11 +7,13 @@ This is a text-based RPG that I am writing as an exercise to improve my python s
 # What does it do?
 16 June 2021: This is a script which will allow the user to play a coin toss game. It will keep track of the coins, wins and losses, and the results of the coin toss. I am working on adding more as mentioned above.
 
+28 June 2021: The coing game is now complete. At the end stage, if the correct dialog choice is selected, the RPG character creation will start.
+
 # How to install it?
-Right now, I do not have a method to distribute this, but I will build that in the future.
+Eventually, the player will not need to install this, it will be web-based.
 
 #How to play?
-This will be a text-based game that users will play through the command line.
+This will be a text-based game that users will play through ttheir web browser.
 
 # License
 Currently, I have not put a license on this project because I am not sure where it's going. 
