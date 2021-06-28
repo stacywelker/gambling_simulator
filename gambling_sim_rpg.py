@@ -1,6 +1,9 @@
 import random
 from pprint import pprint
 import sys
+from crime_RPG import *
+
+
 
 #______begin coin flip game_____
 class Coin_flip_game:
@@ -10,6 +13,7 @@ class Coin_flip_game:
             self.round_count = 0
             self.coin_options = ["heads", "tails"]
             self.possible_answers = ["yes", "no"]
+            self.RPG_running= False
 
 #common practice is to define "getters" (return status of variable, player should be able to do) 
 #and "setters" (change a variable, often don't want players to be able to do this)      
@@ -31,9 +35,12 @@ class Coin_flip_game:
             self.new_amount = self.wager
             self.coins -= self.new_amount
             return self.coins
+        #function to end coin game
+
 
 #function to start a game        
         def start_game(self):
+
             self.answer = input("Would you like to play a game of chance? (yes/no) ")
             while self.answer not in self.possible_answers:
                 print("invalid choice. ")
@@ -70,8 +77,7 @@ class Coin_flip_game:
 #function to run one entire coin flip, modify the coin amount, and count the number of rounds.
 #if there are still coins, runs a function to start a new round         
         def game_round(self):
-              
-            print("regular round") #text for testing
+
             print("You have {coin} coins".format(coin = self.coins))
             
             self.wager = self.int_only()
@@ -102,10 +108,12 @@ class Coin_flip_game:
 
             self.check = self.coin_check()
             
-            self.next = self.new_round()
+            if self.RPG_running == False:
+                self.next = self.new_round()
 
 #a function to start a new round            
         def new_round(self):
+
             answer1 = input("You have played " + str(self.round_count) + " rounds. Would you like to play again? (yes/no) ")
 
             while answer1 not in self.possible_answers:
@@ -121,7 +129,6 @@ class Coin_flip_game:
                 print("Thanks for playing!")
                 self.end_game()
 
-
 #function to monitor round count and initiate losses after 5 rounds.
         def round_monitor(self):
             if self.round_count >= 5:
@@ -130,7 +137,6 @@ class Coin_flip_game:
 #function to run a losing game round
         def losing_round(self):
             
-            print("losing round")#text for testing
             print("You have {coin} coins".format(coin = self.coins))
 
             self.wager = self.int_only()
@@ -161,7 +167,10 @@ class Coin_flip_game:
 
             self.check = self.coin_check()
             
-            self.next = self.new_round()
+            if self.RPG_running == False:
+                self.next = self.new_round()
+
+            
 
 #function to decide course of game based on count of coins.    
         def coin_check(self):
@@ -189,7 +198,14 @@ class Coin_flip_game:
 
             elif self.coins <= -100:
                 self.bait_switch_2()
-       
+      
+        def start_RPG(self):
+            self.RPG_running= True
+            if self.RPG_running == True:
+                print("RPG is running")
+            char_data = createChar()
+            character = Main_char(100, char_data[0], char_data[1], char_data[2], char_data[3], char_data[4])
+            pprint(vars(character))
 
 #Function to open the path to the RPG
 #first is for if the player owes less than 100
@@ -256,119 +272,32 @@ class Coin_flip_game:
         
         
         def flee(self):
-            print("option not finished yet.")
+            print('''You attempt to flee the gaming floor without replaying the debt. 
+            You sprint for the double doors, taking a right turn into the hallway that leads out to the restaurant which serves as a front for the illegal gaming ring. 
+            Frantically, you turn left, taking stairs two at a time. At the top of the stairs, you open a door which leads to the restaurant kitchen. You escape out the staff door of the kitchen.
+            No one seems to be following you. You hail a cab and return to your apartment, legs trembling with fear the entire way. You close the door of you apartment behind you, breathing a sigh of relief.
+            Surely you are safe now. Suddenly you hear the noise of movement in the living room. A tall, broad looking man walks out out of the living room, gun in hand. 
+            ' "You didn't think you could escape payment that easily, did you?" ' He chuckles darkly. You back away until you hit the apartment door, heart pounding. 
+            The man shoots the gun, but instead of the loud pop you were expecting, there is a sharp whoosh of compressed air, like from a paintball gun. 
+            Confused, you clutch your shoulder, where a plastic tube has appeared, a needle connected to it and stuck into your skin through your shirt.
+            ' "If you will not pay your debts honestly, we have other things of value to collect from you." ' The sound of your own breath in your ears becomes the roar of ocean waves.
+            Warm blackness creeps in from the edges of your vision, your body recedes from your awareness. 
+            The last thing you see is the man approaching you with what looks like a body bag as you fall to the ground. ''')
+            print("Your organs have been harvested and sold to repay the debt! Your friends and family are distressed by your mysterious disappearance. They search for you fruitlessly for decades.")
             self.end_game()
         
         def other_options(self):
-            print("option also not finished yet.")
-            self.end_game()
+            print('''An arrangement, huh? I guess this is something we can do. You look like a fit, capable person. Maybe you can helps us with some... errands.
+            Report to the gang HR office tomorrow and we'll get you started. Don't try to run. We know where you live and we know where your family lives.
+            We'll be watching you.''')
+            self.start_RPG()
             
 
 #function to end game        
         def end_game(self):
             quit()
 
+
 new_game = Coin_flip_game()
+
 new_game.start_game()
-
-
-#___________begin RPG_________
-class Main_char:
-
-    def __init__(self, Chealth, Cstrength, Csneakiness, Cintelligence, Cname, Cdebt):
-        self.name = Cname
-        self.strength = Cstrength
-        self.sneakiness = Csneakiness
-        self.intelligence = Cintelligence
-        self.health = Chealth
-        self.debt = Cdebt
-
-#getters and setters for the hero
-    def getHealth(self):
-        return self.health
-
-    def setHealth(self):
-        self.health = newHealth
-
-    def getStrength(self):
-        return self.strength
-
-    def setStrength(self):
-        self.health = newStrength
-
-    def getSneak(self):
-        return self.sneak
-
-    def setSneak(self):
-        self.sneak = newSneak
-
-    def getIntel(self):
-        return self.intel
-
-    def setIntel(self):
-        self.intel = newIntel
-
-    def getName(self):
-        return self.name
-
-    def setName(self):
-        self.name = newName
-
-    def getDebt():
-        return self.debt
-        
-    def setDebt():
-        self.debt = newDebt
-
- #function to create your character
-def createChar():
-    create_choices = ["1", "2", "3"]
-    print(''' Reluctantly, you have decided to join Don Corleone's crew to work off your debt.
-     The next day, you report to the crew HR office to fill out the forms to begin managing your repayment 
-     and to receive your benefits. After all, you don't get to be the top criminal organization in this city without 
-     some corporate structure! ''')
-    charName = str(input("Name? "))
-    #ask the person to put address here but never store it- trigger admin asst. to warn the char not to give address,
-    #these people are dangerous. Feel sympathy for admin, wonder if they are being extorted also.
-    charAddress = str(input("Home address?")) 
-    answer = str(input('''How do you prefer to resolve problems? Choose a number:
-                        (1) With violence 
-                        (2) Create a diversion and sneak away 
-                        (3) Cleverly devise a solution
-                        '''))
-    while answer not in create_choices:
-        print("Invalid selection, please try again.")
-        answer = str(input('''How do you prefer to resolve problems? Choose a number:
-                            (1) With violence 
-                            (2) Create a diversion and sneak away 
-                            (3) Implement a cleverly thought-out solution
-                            '''))
-
-    if answer == "1":
-        charStrength = 6
-        charSneak = 4
-        charInt = 4
-    
-    elif answer == "2":
-        charStrength = 5
-        charSneak = 6
-        charInt = 4
-
-    elif answer == "3":
-        charStrength = 4
-        charSneak = 5
-        charInt = 6        
-
-    charDebt = 100 #self.coins (later will be able to pull this from coin flip game)
-    print("Welcome to the crew, " + charName + ". You will be working for Don Corleone until you repay the " + str(charDebt) + ''' coins you owe.
-    Here is your HR profile:''')
-
-    return (charStrength, charSneak, charInt, charName, charDebt)
-
-#you can create a long tuple which can be referred to by index in the future.
-#char_data = createChar()
-
-#character = Main_char(100, char_data[0], char_data[1], char_data[2], char_data[3], char_data[4])
-
-#pprint(vars(character))
-
